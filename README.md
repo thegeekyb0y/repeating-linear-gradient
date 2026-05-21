@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Repeating Linear Gradint
 
-## Getting Started
+## A minimal Next.js + Tailwind CSS component that demonstrates how to create unique grid scale borders using `repeating-linear-gradient()`.
 
-First, run the development server:
+## What This Demonstrates
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Repeating gradients as patterns** — diagonal hatching and horizontal line rules via `repeating-linear-gradient`
+- **CSS mask compositing** — `mask-b-from-10%` / `mask-t-from-10%` to fade line textures at edges
+
+---
+
+## Core Snippet
+
+```tsx
+// Diagonal hatched border — used for top/bottom scales
+const Horizontal_Scale = ({ className }: { className?: string }) => (
+  <div
+    className={cn(
+      "h-10 w-full border-y border-[var(--pattern)]",
+      "bg-[repeating-linear-gradient(315deg,var(--pattern)_0,var(--pattern)_1px,transparent_1px,transparent_50%)]",
+      "bg-size-[10px_10px]", // Tailwind v4: no config needed
+      className,
+    )}
+  />
+);
+
+// Horizontal line rule with directional mask fade
+const Line = ({ className }: { className?: string }) => (
+  <div
+    className={cn(
+      "h-10 w-full",
+      "bg-[repeating-linear-gradient(to_bottom,var(--pattern)_0,var(--pattern)_1px,transparent_1px,transparent_0.45rem)]",
+      className, // caller passes mask-b-from-10% or mask-t-from-10%
+    )}
+  />
+);
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Set the token once, change everything:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```css
+:root {
+  --pattern: oklch(0% 0 0 / 20%); /* swap for any color */
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+```tsx
+<Line className="mask-b-from-10% absolute inset-x-0 top-0" />
+<Horizontal_Scale className="absolute top-0 w-screen" />
+<Vertical_Scale className="absolute left-0 h-screen" />
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Stack `absolute`-positioned instances of each primitive around a `relative` container to assemble the full drafting-frame layout.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Layer     | Choice                      |
+| --------- | --------------------------- |
+| Framework | Next.js 15 (App Router)     |
+| Styling   | Tailwind CSS v4 (no config) |
+| Language  | TypeScript                  |
