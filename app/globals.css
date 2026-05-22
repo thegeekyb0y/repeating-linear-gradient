@@ -7,6 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --font-eb-garamond: var(--font-eb-garamond);
+  --font-inter: var(--font-inter);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
@@ -81,7 +84,7 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --pattern: #2e2b2b;
+  --pattern: rgba(176, 174, 174, 0.879);
 }
 
 .dark {
